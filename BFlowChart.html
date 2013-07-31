@@ -1,0 +1,71 @@
+<html>
+    <head>
+    <title>Flow Chart</title>
+    <link href="css/ui-lightness/jquery-ui-1.9.2.custom.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.js"></script>
+    <script type="text/javascript" src="js/raphael.js"></script>
+
+        <style>
+            body {
+                background: #FFF;
+                color: #333;
+                font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+            }
+            #holder {
+                height: 480px;
+                margin: 10px 0 0 0;
+                position: absolute;
+                width: 640px;
+                left:20%;
+            }
+            #copy {
+                bottom: 0;
+                font: 300 .7em "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+                position: absolute;
+                right: 1em;
+                text-align: right;
+            }
+            #copy a {
+                color: #fff;
+            }
+           #holder {
+                -moz-border-radius: 10px;
+                -webkit-border-radius: 10px;
+                border: solid 1px #333;
+            }
+            p {
+                text-align: center;
+            }   
+            #toolbox {
+                height: 60px;
+                background-color: #EEE;
+            } 
+        </style>
+
+        <script type="text/javascript">
+            $().ready(function(){
+                var tools = Raphael("holder", 640, 60),
+                shapes = [  tools.ellipse(190, 100, 30, 20),
+                    tools.rect(290, 80, 60, 40, 10),
+                    tools.rect(290, 180, 60, 40, 2),
+                    tools.ellipse(450, 100, 20, 20)
+                ];
+                for (var i = 0, ii = shapes.length; i < ii; i++) {
+                    var color = Raphael.getColor();
+                    shapes[i].attr({fill: color, stroke: '#000', "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+                }
+
+            });
+        </script>
+    </head>
+
+    <body>
+        <p>Drag & Drop Tools - Move shapes around.</p>  
+
+        <div id="toolbox"></div>
+
+        <div id="holder"></div>
+         
+    </body>
+</html>
