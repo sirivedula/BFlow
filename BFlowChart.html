@@ -5,6 +5,7 @@
     <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.js"></script>
     <script type="text/javascript" src="js/raphaelmin.js"></script>
+    <script type="text/javascript" src="js/graffle.js"></script>
 
         <style>
             body {
@@ -45,26 +46,29 @@
         </style>
 
         <script type="text/javascript">
-        var jSonToolBox = [
-                {
-                    type: "ellipse",
-                    x: 50,
-                    y: 30,
-                    rx: 30,
-                    ry: 20
-                },
-                {
-                    type: "rect",
-                    x: 10,
-                    y: 10,
-                    width: 10,
-                    height: 10,
-                    fill: "#fc0"
-                }
-            ];
+        var jSonToolBox = [{type: "ellipse", cx:50, cy:30, rx:30, ry:20, cursor:"move"}];
+        var drawing;
+        var connections = [];
+        var flowShapes = [];
 
             $().ready(function(){
-                var tools = Raphael("toolbox", 640, 60),
+                var dragger = function () {
+                    this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
+                    this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
+                    this.animate({"fill-opacity": .2}, 500);
+                },
+                move = function (dx, dy) {
+                    var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
+                    this.attr(att);
+                    for (var i = connections.length; i--;) {
+                        drawing.connection(connections[i]);
+                    }
+                    drawing.safari();
+                },
+                up = function () {
+                    this.animate({"fill-opacity": 0}, 500);
+                },
+                tools = Raphael("toolbox", 640, 60),
                 shapes = [
                     tools.ellipse(50, 30, 30, 20),
                     tools.rect(100, 10, 60, 40, 10),
@@ -74,18 +78,43 @@
                 for (var i = 0, ii = shapes.length; i < ii; i++) {
                     var color = Raphael.getColor();
                     shapes[i].attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "select"});
+                    shapes[i].drag(move, dragger, up);
                 }
                 shapes[0].node.onclick = function (ele) {                        
-                    shapes[0].attr({fill:'#F00', stroke:'#F00'});
+                    shapes[0].attr({fill:'#F00', stroke:'#F00'});                    
                 };
-                var drawing = Raphael("holder", 640, 480);
+                drawing = Raphael("holder", 640, 480);
                 
-
                 shapes[0].node.onclick = function (ele) {                        
                     shapes[0].attr({fill:'#F00', stroke:'#F00'});
-                    drawing.add(jSonToolBox[0]);
-                };
-
+                    var element = drawing.ellipse(50, 30, 30, 20);
+                    flowShapes.push(element);
+                    element.attr("cursor", "move");
+                    element.drag(move, dragger, up);
+                    if(flowShapes.length > 1){
+                        connections.push(drawing.connection(flowShapes[flowShapes.length-2], flowShapes[flowShapes.length-1], "#000"));
+                    }
+                };                
+                shapes[1].node.onclick = function (ele) {                        
+                    shapes[1].attr({fill:'#F00', stroke:'#F00'});
+                    var element = drawing.rect(100, 10, 60, 40, 10);
+                    flowShapes.push(element);
+                    element.attr("cursor", "move");
+                    element.drag(move, dragger, up);
+                    if(flowShapes.length > 1){
+                        connections.push(drawing.connection(flowShapes[flowShapes.length-2], flowShapes[flowShapes.length-1], "#000"));
+                    }
+                };                
+                shapes[2].node.onclick = function (ele) {                        
+                    shapes[2].attr({fill:'#F00', stroke:'#F00'});
+                    var element = drawing.rect(180, 10, 100, 40, 2);
+                    flowShapes.push(element);
+                    element.attr("cursor", "move");
+                    element.drag(move, dragger, up);
+                    if(flowShapes.length > 1){
+                        connections.push(drawing.connection(flowShapes[flowShapes.length-2], flowShapes[flowShapes.length-1], "#000"));
+                    }
+                };                
             });
         </script>
     </head>
@@ -97,5 +126,6 @@
 
         <div id="holder"></div>
          
+         <div id="div1">test</div>
     </body>
 </html>
