@@ -4,7 +4,7 @@
     <link href="css/ui-lightness/jquery-ui-1.9.2.custom.css" rel="stylesheet">
     <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.js"></script>
-    <script type="text/javascript" src="js/raphael.js"></script>
+    <script type="text/javascript" src="js/raphaelmin.js"></script>
 
         <style>
             body {
@@ -39,22 +39,52 @@
             }   
             #toolbox {
                 height: 60px;
-                background-color: #EEE;
+                background-color: #fff;
+                color:#fff;
             } 
         </style>
 
         <script type="text/javascript">
+        var jSonToolBox = [
+                {
+                    type: "ellipse",
+                    x: 50,
+                    y: 30,
+                    rx: 30,
+                    ry: 20
+                },
+                {
+                    type: "rect",
+                    x: 10,
+                    y: 10,
+                    width: 10,
+                    height: 10,
+                    fill: "#fc0"
+                }
+            ];
+
             $().ready(function(){
-                var tools = Raphael("holder", 640, 60),
-                shapes = [  tools.ellipse(190, 100, 30, 20),
-                    tools.rect(290, 80, 60, 40, 10),
-                    tools.rect(290, 180, 60, 40, 2),
-                    tools.ellipse(450, 100, 20, 20)
+                var tools = Raphael("toolbox", 640, 60),
+                shapes = [
+                    tools.ellipse(50, 30, 30, 20),
+                    tools.rect(100, 10, 60, 40, 10),
+                    tools.rect(180, 10, 100, 40, 2),
+                    tools.ellipse(320, 30, 20, 20)
                 ];
                 for (var i = 0, ii = shapes.length; i < ii; i++) {
                     var color = Raphael.getColor();
-                    shapes[i].attr({fill: color, stroke: '#000', "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+                    shapes[i].attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "select"});
                 }
+                shapes[0].node.onclick = function (ele) {                        
+                    shapes[0].attr({fill:'#F00', stroke:'#F00'});
+                };
+                var drawing = Raphael("holder", 640, 480);
+                
+
+                shapes[0].node.onclick = function (ele) {                        
+                    shapes[0].attr({fill:'#F00', stroke:'#F00'});
+                    drawing.add(jSonToolBox[0]);
+                };
 
             });
         </script>
