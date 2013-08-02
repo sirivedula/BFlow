@@ -72,8 +72,7 @@
                 shapes = [
                     tools.ellipse(50, 30, 30, 20),
                     tools.rect(100, 10, 60, 40, 10),
-                    tools.rect(180, 10, 100, 40, 2),
-                    tools.ellipse(320, 30, 20, 20)
+                    tools.rect(180, 10, 100, 40, 2)
                 ];
                 for (var i = 0, ii = shapes.length; i < ii; i++) {
                     var color = Raphael.getColor();
@@ -88,9 +87,11 @@
                 shapes[0].node.onclick = function (ele) {                        
                     shapes[0].attr({fill:'#F00', stroke:'#F00'});
                     var element = drawing.ellipse(50, 30, 30, 20);
-                    flowShapes.push(element);
-                    element.attr("cursor", "move");
+                    var color = Raphael.getColor();
+                    element.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
                     element.drag(move, dragger, up);
+
+                    flowShapes.push(element);
                     if(flowShapes.length > 1){
                         connections.push(drawing.connection(flowShapes[flowShapes.length-2], flowShapes[flowShapes.length-1], "#000"));
                     }
@@ -99,17 +100,20 @@
                     shapes[1].attr({fill:'#F00', stroke:'#F00'});
                     var element = drawing.rect(100, 10, 60, 40, 10);
                     flowShapes.push(element);
-                    element.attr("cursor", "move");
+                    var color = Raphael.getColor();
+                    element.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
                     element.drag(move, dragger, up);
                     if(flowShapes.length > 1){
                         connections.push(drawing.connection(flowShapes[flowShapes.length-2], flowShapes[flowShapes.length-1], "#000"));
                     }
-                };                
+                };   
+
                 shapes[2].node.onclick = function (ele) {                        
                     shapes[2].attr({fill:'#F00', stroke:'#F00'});
                     var element = drawing.rect(180, 10, 100, 40, 2);
                     flowShapes.push(element);
-                    element.attr("cursor", "move");
+                    var color = Raphael.getColor();
+                    element.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
                     element.drag(move, dragger, up);
                     if(flowShapes.length > 1){
                         connections.push(drawing.connection(flowShapes[flowShapes.length-2], flowShapes[flowShapes.length-1], "#000"));
